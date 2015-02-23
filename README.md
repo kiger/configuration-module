@@ -1,0 +1,2 @@
+# configuration-module
+Configuration management.
