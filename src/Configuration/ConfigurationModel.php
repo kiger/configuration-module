@@ -1,7 +1,7 @@
 <?php namespace Anomaly\ConfigurationModule\Configuration;
 
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationInterface;
-use Anomaly\Streams\Platform\Model\Configurations\ConfigurationsConfigurationsEntryModel;
+use Anomaly\Streams\Platform\Model\Configuration\ConfigurationConfigurationEntryModel;
 
 /**
  * Class ConfigurationModel
@@ -11,7 +11,7 @@ use Anomaly\Streams\Platform\Model\Configurations\ConfigurationsConfigurationsEn
  * @author        Ryan Thompson <ryan@anomaly.is>
  * @package       Anomaly\ConfigurationModule\ConfigurationInterface
  */
-class ConfigurationModel extends ConfigurationsConfigurationsEntryModel implements ConfigurationInterface
+class ConfigurationModel extends ConfigurationConfigurationEntryModel implements ConfigurationInterface
 {
 
     /**

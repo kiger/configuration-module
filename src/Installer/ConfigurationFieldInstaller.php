@@ -3,14 +3,14 @@
 use Anomaly\Streams\Platform\Field\FieldInstaller;
 
 /**
- * Class ConfigurationsFieldInstaller
+ * Class ConfigurationFieldInstaller
  *
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
  * @package       Anomaly\Configurations\Module\Installer
  */
-class ConfigurationsFieldInstaller extends FieldInstaller
+class ConfigurationFieldInstaller extends FieldInstaller
 {
 
     /**

@@ -18,7 +18,7 @@ class ConfigurationModule extends Module
      *
      * @var string
      */
-    protected $navigation = 'streams::navigation.system';
+    protected $navigation = false;
 
     /**
      * The module sections.

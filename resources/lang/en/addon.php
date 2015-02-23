@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'name'        => 'Configurations',
-    'description' => 'Configurations management.'
+    'name'        => 'Configuration',
+    'description' => 'Configuration management.'
 ];

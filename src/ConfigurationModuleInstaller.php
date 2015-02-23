@@ -19,8 +19,8 @@ class ConfigurationModuleInstaller extends ModuleInstaller
      * @var array
      */
     protected $installers = [
-        'Anomaly\ConfigurationModule\Installer\ConfigurationsFieldInstaller',
-        'Anomaly\ConfigurationModule\Installer\ConfigurationsStreamInstaller',
+        'Anomaly\ConfigurationModule\Installer\ConfigurationFieldInstaller',
+        'Anomaly\ConfigurationModule\Installer\ConfigurationStreamInstaller',
     ];
 
 }

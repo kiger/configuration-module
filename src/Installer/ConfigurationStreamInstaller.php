@@ -3,14 +3,14 @@
 use Anomaly\Streams\Platform\Stream\StreamInstaller;
 
 /**
- * Class ConfigurationsStreamInstaller
+ * Class ConfigurationStreamInstaller
  *
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
  * @package       Anomaly\Configurations\Module\Installer
  */
-class ConfigurationsStreamInstaller extends StreamInstaller
+class ConfigurationStreamInstaller extends StreamInstaller
 {
 
     /**
@@ -19,7 +19,7 @@ class ConfigurationsStreamInstaller extends StreamInstaller
      * @var array
      */
     protected $stream = [
-        'slug'   => 'configurations',
+        'slug'   => 'configuration',
         'locked' => true
     ];
 
