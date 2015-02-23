@@ -34,7 +34,7 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
      * Create a new ConfigurationRepositoryInterface instance.
      *
      * @param ConfigurationModel $model
-     * @param Repository   $config
+     * @param Repository         $config
      */
     public function __construct(ConfigurationModel $model, Repository $config)
     {
@@ -47,11 +47,12 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
      * or return a new instance.
      *
      * @param $key
+     * @param $scope
      * @return ConfigurationInterface
      */
-    public function findOrNew($key)
+    public function findOrNew($key, $scope)
     {
-        $configuration = $this->model->where('key', $key)->first();
+        $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
 
         if (!$configuration) {
             return $this->model->newInstance();
@@ -64,12 +65,13 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
      * Get a configuration value.
      *
      * @param      $key
+     * @param      $scope
      * @param null $default
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get($key, $scope, $default = null)
     {
-        $configuration = $this->model->where('key', $key)->first();
+        $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
 
         if (!$configuration) {
             return $this->config->get($key, $default);
@@ -92,12 +94,13 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
      * Set a configuration value.
      *
      * @param $key
+     * @param $scope
      * @param $value
      * @return $this
      */
-    public function set($key, $value)
+    public function set($key, $scope, $value)
     {
-        $configuration = $this->model->where('key', $key)->first();
+        $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
 
         if (!$configuration) {
 
@@ -126,12 +129,13 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
     /**
      * Get all configurations for a namespace.
      *
-     * @param $getNamespace
+     * @param $namespace
+     * @param $scope
      * @return ConfigurationCollection
      */
-    public function getAll($namespace)
+    public function getAll($namespace, $scope)
     {
-        $configurations = $this->model->where('key', 'LIKE', $namespace . '::%')->get();
+        $configurations = $this->model->where('scope', $scope)->where('key', 'LIKE', $namespace . '::%')->get();
 
         return new ConfigurationCollection($configurations->lists('value', 'key'));
     }

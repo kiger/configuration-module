@@ -56,4 +56,18 @@ class ConfigurationFormBuilder extends FormBuilder
 
         parent::__construct($form);
     }
+
+    /**
+     * Render the form for editing configuration.
+     *
+     * @param $entry
+     * @param $scope
+     * @return \Illuminate\View\View|\Symfony\Component\HttpFoundation\Response
+     */
+    public function render($entry, $scope)
+    {
+        $this->form->setOption('scope', $scope);
+
+        return parent::render($entry);
+    }
 }

@@ -18,33 +18,37 @@ interface ConfigurationRepositoryInterface
      * or return a new instance.
      *
      * @param $key
+     * @param $scope
      * @return ConfigurationInterface
      */
-    public function findOrNew($key);
+    public function findOrNew($key, $scope);
 
     /**
      * Get a configuration value.
      *
      * @param      $key
+     * @param      $scope
      * @param null $default
      * @return mixed
      */
-    public function get($key, $default = null);
+    public function get($key, $scope, $default = null);
 
     /**
      * Set a configuration value.
      *
      * @param $key
+     * @param $scope
      * @param $value
      * @return $this
      */
-    public function set($key, $value);
+    public function set($key, $scope, $value);
 
     /**
      * Get all configurations for a namespace.
      *
-     * @param $getNamespace
+     * @param $namespace
+     * @param $scope
      * @return ConfigurationCollection
      */
-    public function getAll($namespace);
+    public function getAll($namespace, $scope);
 }

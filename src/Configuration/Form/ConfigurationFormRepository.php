@@ -41,15 +41,18 @@ class ConfigurationFormRepository implements FormRepositoryInterface
     /**
      * Create a new ConfigurationFormRepositoryInterface instance.
      *
-     * @param Repository                 $config
-     * @param Container                  $container
+     * @param Repository                       $config
+     * @param Container                        $container
      * @param ConfigurationRepositoryInterface $configurations
      */
-    public function __construct(Repository $config, Container $container, ConfigurationRepositoryInterface $configurations)
-    {
-        $this->config    = $config;
-        $this->configurations  = $configurations;
-        $this->container = $container;
+    public function __construct(
+        Repository $config,
+        Container $container,
+        ConfigurationRepositoryInterface $configurations
+    ) {
+        $this->config         = $config;
+        $this->configurations = $configurations;
+        $this->container      = $container;
     }
 
     /**
@@ -77,6 +80,7 @@ class ConfigurationFormRepository implements FormRepositoryInterface
         foreach ($form->getFields() as $field) {
             $this->configurations->set(
                 $namespace . $field->getField(),
+                $form->getOption('scope'),
                 $request->get($field->getInputName())
             );
         }

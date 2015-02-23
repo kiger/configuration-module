@@ -94,7 +94,11 @@ class ConfigurationFormFields
             );
 
             // Get the value defaulting to the default value.
-            $field['value'] = $configurations->get($namespace . $slug, array_get($field['config'], 'default_value'));
+            $field['value'] = $configurations->get(
+                $namespace . $slug,
+                $builder->getFormOption('scope'),
+                array_get($field['config'], 'default_value')
+            );
         }
 
         $builder->setFields($fields);
