@@ -20,13 +20,4 @@ class ConfigurationModule extends Module
      */
     protected $navigation = false;
 
-    /**
-     * The module sections.
-     *
-     * @var array
-     */
-    protected $sections = [
-        'configurations'
-    ];
-
 }
