@@ -19,6 +19,9 @@ class ConfigurationsFieldInstaller extends FieldInstaller
      * @var array
      */
     protected $fields = [
+        'scope' => [
+            'type' => 'anomaly.field_type.text'
+        ],
         'key'   => [
             'type' => 'anomaly.field_type.text'
         ],

@@ -29,9 +29,11 @@ class ConfigurationsStreamInstaller extends StreamInstaller
      * @var array
      */
     protected $assignments = [
+        'scope' => [
+            'required' => true
+        ],
         'key'   => [
-            'required' => true,
-            'unique'   => true
+            'required' => true
         ],
         'value' => []
     ];
