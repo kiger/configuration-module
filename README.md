@@ -5,6 +5,6 @@
 [![Code Quality](http://img.shields.io/scrutinizer/g/anomalylabs/configurations-module.svg)](https://scrutinizer-ci.com/g/anomalylabs/configurations-module/)
 [![Total Downloads](http://img.shields.io/packagist/dt/anomaly/configurations-module.svg)](https://packagist.org/packages/anomaly/configurations-module)
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/36aca857-a877-439d-8edd-0cbc42924133/small.png)](https://insight.sensiolabs.com/projects/36aca857-a877-439d-8edd-0cbc42924133)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/15919ee3-2cac-4e59-b54d-d79afbcf293c/small.png)](https://insight.sensiolabs.com/projects/15919ee3-2cac-4e59-b54d-d79afbcf293c)
 
 Configurations management. 
