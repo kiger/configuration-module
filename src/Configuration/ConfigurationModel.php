@@ -1,6 +1,6 @@
-<?php namespace Anomaly\ConfigurationsModule\Configuration;
+<?php namespace Anomaly\ConfigurationModule\Configuration;
 
-use Anomaly\ConfigurationsModule\Configuration\Contract\ConfigurationInterface;
+use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationInterface;
 use Anomaly\Streams\Platform\Model\Configurations\ConfigurationsConfigurationsEntryModel;
 
 /**
@@ -9,7 +9,7 @@ use Anomaly\Streams\Platform\Model\Configurations\ConfigurationsConfigurationsEn
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\ConfigurationsModule\ConfigurationInterface
+ * @package       Anomaly\ConfigurationModule\ConfigurationInterface
  */
 class ConfigurationModel extends ConfigurationsConfigurationsEntryModel implements ConfigurationInterface
 {

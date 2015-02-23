@@ -1,16 +1,16 @@
-<?php namespace Anomaly\ConfigurationsModule;
+<?php namespace Anomaly\ConfigurationModule;
 
 use Anomaly\Streams\Platform\Addon\Module\Module;
 
 /**
- * Class ConfigurationsModule
+ * Class ConfigurationModule
  *
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
  * @package       Anomaly\Configurations\Module
  */
-class ConfigurationsModule extends Module
+class ConfigurationModule extends Module
 {
 
     /**

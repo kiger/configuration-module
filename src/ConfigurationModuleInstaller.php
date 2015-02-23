@@ -1,16 +1,16 @@
-<?php namespace Anomaly\ConfigurationsModule;
+<?php namespace Anomaly\ConfigurationModule;
 
 use Anomaly\Streams\Platform\Addon\Module\ModuleInstaller;
 
 /**
- * Class ConfigurationsModuleInstaller
+ * Class ConfigurationModuleInstaller
  *
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\ConfigurationsModule
+ * @package       Anomaly\ConfigurationModule
  */
-class ConfigurationsModuleInstaller extends ModuleInstaller
+class ConfigurationModuleInstaller extends ModuleInstaller
 {
 
     /**
@@ -19,8 +19,8 @@ class ConfigurationsModuleInstaller extends ModuleInstaller
      * @var array
      */
     protected $installers = [
-        'Anomaly\ConfigurationsModule\Installer\ConfigurationsFieldInstaller',
-        'Anomaly\ConfigurationsModule\Installer\ConfigurationsStreamInstaller',
+        'Anomaly\ConfigurationModule\Installer\ConfigurationsFieldInstaller',
+        'Anomaly\ConfigurationModule\Installer\ConfigurationsStreamInstaller',
     ];
 
 }

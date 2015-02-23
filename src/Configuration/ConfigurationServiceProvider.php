@@ -1,4 +1,4 @@
-<?php namespace Anomaly\ConfigurationsModule\Configuration;
+<?php namespace Anomaly\ConfigurationModule\Configuration;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\ConfigurationsModule\Configuration
+ * @package       Anomaly\ConfigurationModule\Configuration
  */
 class ConfigurationServiceProvider extends ServiceProvider
 {
@@ -21,15 +21,15 @@ class ConfigurationServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            'Anomaly\ConfigurationsModule\Configuration\ConfigurationModel',
-            'Anomaly\ConfigurationsModule\Configuration\ConfigurationModel'
+            'Anomaly\ConfigurationModule\Configuration\ConfigurationModel',
+            'Anomaly\ConfigurationModule\Configuration\ConfigurationModel'
         );
 
         $this->app->singleton(
-            'Anomaly\ConfigurationsModule\Configuration\Contract\ConfigurationRepositoryInterface',
-            'Anomaly\ConfigurationsModule\Configuration\ConfigurationRepository'
+            'Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface',
+            'Anomaly\ConfigurationModule\Configuration\ConfigurationRepository'
         );
 
-        $this->app->register('Anomaly\ConfigurationsModule\Configuration\ConfigurationRouteProvider');
+        $this->app->register('Anomaly\ConfigurationModule\Configuration\ConfigurationRouteProvider');
     }
 }

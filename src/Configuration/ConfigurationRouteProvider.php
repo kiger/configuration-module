@@ -1,4 +1,4 @@
-<?php namespace Anomaly\ConfigurationsModule\Configuration;
+<?php namespace Anomaly\ConfigurationModule\Configuration;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Routing\Router;
@@ -9,7 +9,7 @@ use Illuminate\Routing\Router;
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\ConfigurationsModule\Configuration
+ * @package       Anomaly\ConfigurationModule\Configuration
  */
 class ConfigurationRouteProvider extends RouteServiceProvider
 {
@@ -30,7 +30,7 @@ class ConfigurationRouteProvider extends RouteServiceProvider
 
         $router->any(
             'admin/configurations/{addon}',
-            'Anomaly\ConfigurationsModule\Http\Controller\Admin\ConfigurationsController@edit'
+            'Anomaly\ConfigurationModule\Http\Controller\Admin\ConfigurationsController@edit'
         );
     }
 }

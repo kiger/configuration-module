@@ -1,6 +1,6 @@
-<?php namespace Anomaly\ConfigurationsModule;
+<?php namespace Anomaly\ConfigurationModule;
 
-use Anomaly\ConfigurationsModule\Configuration\Contract\ConfigurationRepositoryInterface;
+use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface;
 use Anomaly\Streams\Platform\Addon\Plugin\Plugin;
 
 /**
@@ -9,7 +9,7 @@ use Anomaly\Streams\Platform\Addon\Plugin\Plugin;
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\ConfigurationsModule
+ * @package       Anomaly\ConfigurationModule
  */
 class ConfigurationModulePlugin extends Plugin
 {

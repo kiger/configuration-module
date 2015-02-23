@@ -1,4 +1,4 @@
-<?php namespace Anomaly\ConfigurationsModule\Configuration\Form;
+<?php namespace Anomaly\ConfigurationModule\Configuration\Form;
 
 use Anomaly\Streams\Platform\Addon\Block\BlockCollection;
 use Anomaly\Streams\Platform\Addon\Distribution\DistributionCollection;
@@ -15,7 +15,7 @@ use Anomaly\Streams\Platform\Ui\Form\Form;
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\ConfigurationsModule\Configuration\Form
+ * @package       Anomaly\ConfigurationModule\Configuration\Form
  */
 class ConfigurationFormData
 {

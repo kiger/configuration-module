@@ -1,6 +1,6 @@
-<?php namespace Anomaly\ConfigurationsModule\Configuration\Form;
+<?php namespace Anomaly\ConfigurationModule\Configuration\Form;
 
-use Anomaly\ConfigurationsModule\Configuration\Contract\ConfigurationRepositoryInterface;
+use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface;
 use Anomaly\Streams\Platform\Ui\Form\Contract\FormRepositoryInterface;
 use Anomaly\Streams\Platform\Ui\Form\Form;
 use Illuminate\Config\Repository;
@@ -12,7 +12,7 @@ use Illuminate\Container\Container;
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\ConfigurationsModule\Configuration\Form
+ * @package       Anomaly\ConfigurationModule\Configuration\Form
  */
 class ConfigurationFormRepository implements FormRepositoryInterface
 {

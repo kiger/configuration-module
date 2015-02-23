@@ -1,7 +1,7 @@
-<?php namespace Anomaly\ConfigurationsModule\Configuration;
+<?php namespace Anomaly\ConfigurationModule\Configuration;
 
-use Anomaly\ConfigurationsModule\Configuration\Contract\ConfigurationInterface;
-use Anomaly\ConfigurationsModule\Configuration\Contract\ConfigurationRepositoryInterface;
+use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationInterface;
+use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeModifier;
 use Illuminate\Config\Repository;
 
@@ -11,7 +11,7 @@ use Illuminate\Config\Repository;
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\ConfigurationsModule\ConfigurationInterface
+ * @package       Anomaly\ConfigurationModule\ConfigurationInterface
  */
 class ConfigurationRepository implements ConfigurationRepositoryInterface
 {

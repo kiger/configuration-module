@@ -23,7 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Anomaly\\ConfigurationsModule\\": "src/"
+            "Anomaly\\ConfigurationModule\\": "src/"
         }
     },
     "extra": {
