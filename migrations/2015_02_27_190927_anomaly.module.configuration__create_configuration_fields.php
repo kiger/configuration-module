@@ -1,16 +1,15 @@
-<?php namespace Anomaly\ConfigurationModule\Installer;
+<?php
 
-use Anomaly\Streams\Platform\Field\FieldInstaller;
+use Anomaly\Streams\Platform\Database\Migration\Migration;
 
 /**
- * Class ConfigurationFieldInstaller
+ * Class AnomalyModuleConfigurationCreateConfigurationFields
  *
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\Configurations\Module\Installer
  */
-class ConfigurationFieldInstaller extends FieldInstaller
+class AnomalyModuleConfigurationCreateConfigurationFields extends Migration
 {
 
     /**
