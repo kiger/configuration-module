@@ -29,7 +29,5 @@ class ConfigurationServiceProvider extends ServiceProvider
             'Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface',
             'Anomaly\ConfigurationModule\Configuration\ConfigurationRepository'
         );
-
-        $this->app->register('Anomaly\ConfigurationModule\Configuration\ConfigurationRouteProvider');
     }
 }
