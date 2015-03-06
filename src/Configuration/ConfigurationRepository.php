@@ -77,9 +77,17 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
             return $this->config->get($key, $default);
         }
 
-        $field = str_replace('::', '::configurations.', $key);
+        if (!$field = config(str_replace('::', '::configuration/configuration.', $key))) {
+            $field = config(str_replace('::', '::configuration.', $key));
+        }
 
-        $type = app(config($field . '.type', config($field)));
+        if (is_string($field)) {
+            $field = [
+                'type' => $field
+            ];
+        }
+
+        $type = app(array_get($field, 'type'));
 
         $modifier = $type->getModifier();
 
@@ -109,9 +117,17 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
             $configuration->key = $key;
         }
 
-        $field = str_replace('::', '::configurations.', $key);
+        if (!$field = config(str_replace('::', '::configuration/configuration.', $key))) {
+            $field = config(str_replace('::', '::configuration.', $key));
+        }
 
-        $type = app(config($field . '.type', config($field)));
+        if (is_string($field)) {
+            $field = [
+                'type' => $field
+            ];
+        }
+
+        $type = app(array_get($field, 'type'));
 
         $modifier = $type->getModifier();
 
