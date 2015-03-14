@@ -1,6 +1,6 @@
 <?php namespace Anomaly\ConfigurationModule;
 
-use Illuminate\Support\ServiceProvider;
+use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
 
 /**
  * Class ConfigurationModuleServiceProvider
@@ -10,28 +10,33 @@ use Illuminate\Support\ServiceProvider;
  * @author        Ryan Thompson <ryan@anomaly.is>
  * @package       Anomaly\ConfigurationModule
  */
-class ConfigurationModuleServiceProvider extends ServiceProvider
+class ConfigurationModuleServiceProvider extends AddonServiceProvider
 {
 
     /**
-     * Boot the service provider.
+     * The addon plugin.
+     *
+     * @var array
      */
-    public function boot()
-    {
-        if (env('INSTALLED')) {
-            $this->app->make('twig')->addExtension(
-                $this->app->make('\Anomaly\ConfigurationModule\ConfigurationModulePlugin')
-            );
-        }
-    }
+    protected $plugins = [
+        'Anomaly\ConfigurationModule\ConfigurationModulePlugin'
+    ];
 
     /**
-     * Register the service provider.
+     * The class bindings.
      *
-     * @return void
+     * @var array
      */
-    public function register()
-    {
-        $this->app->register('Anomaly\ConfigurationModule\Configuration\ConfigurationServiceProvider');
-    }
+    protected $bindings = [
+        'Anomaly\ConfigurationModule\Configuration\ConfigurationModel' => 'Anomaly\ConfigurationModule\Configuration\ConfigurationModel'
+    ];
+
+    /**
+     * The singleton bindings.
+     *
+     * @var array
+     */
+    protected $singletons = [
+        'Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface' => 'Anomaly\ConfigurationModule\Configuration\ConfigurationRepository'
+    ];
 }
