@@ -38,7 +38,7 @@ class ConfigurationFormFields
      */
     public function handle(ConfigurationFormBuilder $builder, ConfigurationRepositoryInterface $configurations)
     {
-        $namespace = $builder->getFormEntry() . '::';
+        $namespace = $builder->getEntry() . '::';
 
         /**
          * Get the fields from the config system. Sections are
