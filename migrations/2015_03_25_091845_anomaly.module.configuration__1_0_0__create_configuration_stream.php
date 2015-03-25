@@ -3,17 +3,17 @@
 use Anomaly\Streams\Platform\Database\Migration\Migration;
 
 /**
- * Class AnomalyModuleConfigurationCreateConfigurationStream
+ * Class AnomalyModuleConfiguration_1_0_0_CreateConfigurationStream
  *
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
  */
-class AnomalyModuleConfigurationCreateConfigurationStream extends Migration
+class AnomalyModuleConfiguration_1_0_0_CreateConfigurationStream extends Migration
 {
 
     /**
-     * Stream information.
+     * The stream definition.
      *
      * @var array
      */
@@ -34,7 +34,7 @@ class AnomalyModuleConfigurationCreateConfigurationStream extends Migration
         'key'   => [
             'required' => true
         ],
-        'value' => []
+        'value'
     ];
 
 }
