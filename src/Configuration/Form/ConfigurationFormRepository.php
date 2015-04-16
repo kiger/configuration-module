@@ -1,8 +1,9 @@
 <?php namespace Anomaly\ConfigurationModule\Configuration\Form;
 
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface;
+use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Anomaly\Streams\Platform\Ui\Form\Contract\FormRepositoryInterface;
-use Anomaly\Streams\Platform\Ui\Form\Form;
+use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
 
@@ -69,19 +70,21 @@ class ConfigurationFormRepository implements FormRepositoryInterface
     /**
      * Save the form.
      *
-     * @param Form $form
+     * @param FormBuilder $builder
      * @return bool|mixed
      */
-    public function save(Form $form)
+    public function save(FormBuilder $builder)
     {
-        $request   = $form->getRequest();
+        $form = $builder->getForm();
+
         $namespace = $form->getEntry() . '::';
 
+        /* @var FieldType $field */
         foreach ($form->getFields() as $field) {
             $this->configurations->set(
                 $namespace . $field->getField(),
                 $form->getOption('scope'),
-                $request->get($field->getInputName())
+                $builder->getFormValue($field->getInputName())
             );
         }
     }

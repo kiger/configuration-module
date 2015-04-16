@@ -38,7 +38,7 @@ class ConfigurationFormFields
      */
     public function handle(ConfigurationFormBuilder $builder, ConfigurationRepositoryInterface $configurations)
     {
-        $namespace = $builder->getEntry() . '::';
+        $namespace = $builder->getFormEntry() . '::';
 
         /**
          * Get the fields from the config system. Sections are
@@ -73,24 +73,30 @@ class ConfigurationFormFields
             $field['config'] = array_get($field, 'config', []);
 
             // Default the label.
-            $field['label'] = array_get(
-                $field,
-                'label',
-                $namespace . 'configuration.' . $slug . '.label'
+            $field['label'] = trans(
+                array_get(
+                    $field,
+                    'label',
+                    $namespace . 'configuration.' . $slug . '.label'
+                )
             );
 
             // Default the placeholder.
-            $field['config']['placeholder'] = array_get(
-                $field['config'],
-                'placeholder',
-                $namespace . 'configuration.' . $slug . '.placeholder'
+            $field['config']['placeholder'] = trans(
+                array_get(
+                    $field['config'],
+                    'placeholder',
+                    $namespace . 'configuration.' . $slug . '.placeholder'
+                )
             );
 
             // Default the instructions.
-            $field['instructions'] = array_get(
-                $field,
-                'instructions',
-                $namespace . 'configuration.' . $slug . '.instructions'
+            $field['instructions'] = trans(
+                array_get(
+                    $field,
+                    'instructions',
+                    $namespace . 'configuration.' . $slug . '.instructions'
+                )
             );
 
             // Get the value defaulting to the default value.
