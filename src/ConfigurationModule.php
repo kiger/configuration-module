@@ -14,9 +14,10 @@ class ConfigurationModule extends Module
 {
 
     /**
-     * The module navigation.
+     * This module does not
+     * display in navigation.
      *
-     * @var string
+     * @var bool
      */
     protected $navigation = false;
 
