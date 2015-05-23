@@ -1,12 +1,12 @@
 {
-    "name": "anomaly/configurations-module",
+    "name": "anomaly/configuration-module",
     "type": "streams-addon",
-    "description": "Configurations management.",
+    "description": "Configuration management.",
     "version": "1.0.0",
     "license": "MIT",
     "keywords": [
         "streams-addon",
-        "configurations",
+        "configuration",
         "pyrocms",
         "laravel"
     ],
