@@ -1,6 +1,5 @@
 <?php namespace Anomaly\ConfigurationModule\Configuration\Form;
 
-use Anomaly\Streams\Platform\Ui\Form\Form;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 
 /**
@@ -13,6 +12,13 @@ use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
  */
 class ConfigurationFormBuilder extends FormBuilder
 {
+
+    /**
+     * The configuration scope.
+     *
+     * @var null|string
+     */
+    protected $scope = null;
 
     /**
      * The form actions handler.
@@ -33,41 +39,25 @@ class ConfigurationFormBuilder extends FormBuilder
     ];
 
     /**
-     * The form fields handler.
+     * Get the scope.
      *
-     * @var string
+     * @return null|string
      */
-    protected $fields = 'Anomaly\ConfigurationModule\Configuration\Form\ConfigurationFormFields@handle';
-
-    /**
-     * Create a new ConfigurationFormBuilder instance.
-     *
-     * @param Form $form
-     */
-    public function __construct(Form $form)
+    public function getScope()
     {
-        /**
-         * Set these explicitly so extending forms won't
-         * break automation with normal defaulting patterns.
-         */
-        $form->setOption('data', 'Anomaly\ConfigurationModule\Configuration\Form\ConfigurationFormData@handle');
-        $form->setOption('repository', 'Anomaly\ConfigurationModule\Configuration\Form\ConfigurationFormRepository');
-        $form->setOption('wrapper_view', 'anomaly.module.configurations::admin/configurations/form/wrapper');
-
-        parent::__construct($form);
+        return $this->scope;
     }
 
     /**
-     * Render the form for editing configuration.
+     * Set the scope.
      *
-     * @param $entry
      * @param $scope
-     * @return \Illuminate\View\View|\Symfony\Component\HttpFoundation\Response
+     * @return $this
      */
-    public function render($entry, $scope)
+    public function setScope($scope)
     {
-        $this->form->setOption('scope', $scope);
+        $this->scope = $scope;
 
-        return parent::render($entry);
+        return $this;
     }
 }

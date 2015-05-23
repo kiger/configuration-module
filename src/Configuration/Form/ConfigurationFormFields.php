@@ -36,20 +36,21 @@ class ConfigurationFormFields
      *
      * @param ConfigurationFormBuilder $builder
      */
-    public function handle(ConfigurationFormBuilder $builder, ConfigurationRepositoryInterface $configurations)
+    public function handle(ConfigurationFormBuilder $builder, ConfigurationRepositoryInterface $configuration)
     {
+        $scope     = $builder->getScope();
         $namespace = $builder->getFormEntry() . '::';
 
         /**
          * Get the fields from the config system. Sections are
          * optionally defined the same way.
          */
-        if (!$fields = $this->config->get($namespace . 'configurations/configurations')) {
-            $fields = $fields = $this->config->get($namespace . 'configurations', []);
+        if (!$fields = $this->config->get($namespace . 'configuration/configuration')) {
+            $fields = $fields = $this->config->get($namespace . 'configuration', []);
         }
 
-        if ($sections = $this->config->get($namespace . 'configurations/sections')) {
-            $builder->setFormOption('sections', $sections);
+        if ($sections = $this->config->get($namespace . 'configuration/sections')) {
+            $builder->setSections($sections);
         }
 
         /**
@@ -77,7 +78,7 @@ class ConfigurationFormFields
                 array_get(
                     $field,
                     'label',
-                    $namespace . 'configuration.' . $slug . '.label'
+                    $namespace . 'setting.' . $slug . '.label'
                 )
             );
 
@@ -86,7 +87,7 @@ class ConfigurationFormFields
                 array_get(
                     $field['config'],
                     'placeholder',
-                    $namespace . 'configuration.' . $slug . '.placeholder'
+                    $namespace . 'setting.' . $slug . '.placeholder'
                 )
             );
 
@@ -95,16 +96,12 @@ class ConfigurationFormFields
                 array_get(
                     $field,
                     'instructions',
-                    $namespace . 'configuration.' . $slug . '.instructions'
+                    $namespace . 'setting.' . $slug . '.instructions'
                 )
             );
 
             // Get the value defaulting to the default value.
-            $field['value'] = $configurations->get(
-                $namespace . $slug,
-                $builder->getFormOption('scope'),
-                array_get($field['config'], 'default_value')
-            );
+            $field['value'] = $configuration->get($namespace . $slug, $scope, array_get($field['config'], 'default_value'));
         }
 
         $builder->setFields($fields);

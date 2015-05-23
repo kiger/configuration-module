@@ -70,20 +70,18 @@ class ConfigurationFormRepository implements FormRepositoryInterface
     /**
      * Save the form.
      *
-     * @param FormBuilder $builder
+     * @param FormBuilder|ConfigurationFormBuilder $builder
      * @return bool|mixed
      */
     public function save(FormBuilder $builder)
     {
-        $form = $builder->getForm();
-
-        $namespace = $form->getEntry() . '::';
+        $namespace = $builder->getFormEntry() . '::';
 
         /* @var FieldType $field */
-        foreach ($form->getFields() as $field) {
+        foreach ($builder->getFormFields() as $field) {
             $this->configurations->set(
                 $namespace . $field->getField(),
-                $form->getOption('scope'),
+                $builder->getScope(),
                 $builder->getFormValue($field->getInputName())
             );
         }

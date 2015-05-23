@@ -114,7 +114,8 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
 
             $configuration = $this->model->newInstance();
 
-            $configuration->key = $key;
+            $configuration->key   = $key;
+            $configuration->scope = $scope;
         }
 
         if (!$field = config(str_replace('::', '::configuration/configuration.', $key))) {
