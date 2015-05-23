@@ -38,7 +38,7 @@ class ConfigurationFormFields
      */
     public function handle(ConfigurationFormBuilder $builder, ConfigurationRepositoryInterface $configuration)
     {
-        $scope     = $builder->getScope();
+        $scope = $builder->getScope();
         $namespace = $builder->getFormEntry() . '::';
 
         /**
@@ -78,7 +78,7 @@ class ConfigurationFormFields
                 array_get(
                     $field,
                     'label',
-                    $namespace . 'setting.' . $slug . '.label'
+                    $namespace . 'configuration.' . $slug . '.label'
                 )
             );
 
@@ -87,7 +87,7 @@ class ConfigurationFormFields
                 array_get(
                     $field['config'],
                     'placeholder',
-                    $namespace . 'setting.' . $slug . '.placeholder'
+                    $namespace . 'configuration.' . $slug . '.placeholder'
                 )
             );
 
@@ -96,12 +96,16 @@ class ConfigurationFormFields
                 array_get(
                     $field,
                     'instructions',
-                    $namespace . 'setting.' . $slug . '.instructions'
+                    $namespace . 'configuration.' . $slug . '.instructions'
                 )
             );
 
             // Get the value defaulting to the default value.
-            $field['value'] = $configuration->get($namespace . $slug, $scope, array_get($field['config'], 'default_value'));
+            $field['value'] = $configuration->get(
+                $namespace . $slug,
+                $scope,
+                array_get($field['config'], 'default_value')
+            );
         }
 
         $builder->setFields($fields);
