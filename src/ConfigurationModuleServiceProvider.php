@@ -23,15 +23,6 @@ class ConfigurationModuleServiceProvider extends AddonServiceProvider
     ];
 
     /**
-     * The class bindings.
-     *
-     * @var array
-     */
-    protected $bindings = [
-        'Anomaly\ConfigurationModule\Configuration\ConfigurationModel' => 'Anomaly\ConfigurationModule\Configuration\ConfigurationModel'
-    ];
-
-    /**
      * The singleton bindings.
      *
      * @var array

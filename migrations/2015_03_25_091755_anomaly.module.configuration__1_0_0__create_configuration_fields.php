@@ -13,7 +13,7 @@ class AnomalyModuleConfiguration_1_0_0_CreateConfigurationFields extends Migrati
 {
 
     /**
-     * Fields to install.
+     * The addon fields.
      *
      * @var array
      */

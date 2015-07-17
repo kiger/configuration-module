@@ -2,7 +2,10 @@
 
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationInterface;
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface;
+use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
+use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeCollection;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeModifier;
+use Anomaly\Streams\Platform\Entry\EntryRepository;
 use Illuminate\Config\Repository;
 
 /**
@@ -13,7 +16,7 @@ use Illuminate\Config\Repository;
  * @author        Ryan Thompson <ryan@anomaly.is>
  * @package       Anomaly\ConfigurationModule\ConfigurationInterface
  */
-class ConfigurationRepository implements ConfigurationRepositoryInterface
+class ConfigurationRepository extends EntryRepository implements ConfigurationRepositoryInterface
 {
 
     /**
@@ -31,34 +34,24 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
     protected $config;
 
     /**
-     * Create a new ConfigurationRepositoryInterface instance.
+     * The field type collection.
      *
-     * @param ConfigurationModel $model
-     * @param Repository         $config
+     * @var FieldTypeCollection
      */
-    public function __construct(ConfigurationModel $model, Repository $config)
-    {
-        $this->model  = $model;
-        $this->config = $config;
-    }
+    protected $fieldTypes;
 
     /**
-     * Find a configuration by it's key
-     * or return a new instance.
+     * Create a new ConfigurationRepositoryInterface instance.
      *
-     * @param $key
-     * @param $scope
-     * @return ConfigurationInterface
+     * @param ConfigurationModel  $model
+     * @param Repository          $config
+     * @param FieldTypeCollection $fieldTypes
      */
-    public function findOrNew($key, $scope)
+    public function __construct(ConfigurationModel $model, Repository $config, FieldTypeCollection $fieldTypes)
     {
-        $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
-
-        if (!$configuration) {
-            return $this->model->newInstance();
-        }
-
-        return $configuration;
+        $this->model      = $model;
+        $this->config     = $config;
+        $this->fieldTypes = $fieldTypes;
     }
 
     /**
@@ -71,31 +64,16 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
      */
     public function get($key, $scope, $default = null)
     {
+        /* @var ConfigurationInterface $configuration */
         $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
 
         if (!$configuration) {
             return $this->config->get($key, $default);
+        } else {
+            $value = $configuration->getValue();
         }
 
-        if (!$field = config(str_replace('::', '::configuration/configuration.', $key))) {
-            $field = config(str_replace('::', '::configuration.', $key));
-        }
-
-        if (is_string($field)) {
-            $field = [
-                'type' => $field
-            ];
-        }
-
-        $type = app(array_get($field, 'type'));
-
-        $modifier = $type->getModifier();
-
-        if ($modifier instanceof FieldTypeModifier) {
-            return $modifier->restore($configuration->value);
-        }
-
-        return $configuration->value;
+        return $this->restore($key, $value);
     }
 
     /**
@@ -108,18 +86,25 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
      */
     public function set($key, $scope, $value)
     {
+        /* @var ConfigurationInterface $configuration */
         $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
 
-        if (!$configuration) {
-
-            $configuration = $this->model->newInstance();
-
-            $configuration->key   = $key;
-            $configuration->scope = $scope;
+        /**
+         * If nothing exists yet then
+         * create a new instance.
+         */
+        if (!$configuration && $configuration = $this->model->newInstance()) {
+            $configuration
+                ->setKey($key)
+                ->setScope($scope);
         }
 
-        if (!$field = config(str_replace('::', '::configuration/configuration.', $key))) {
-            $field = config(str_replace('::', '::configuration.', $key));
+        /**
+         * Next try and find the field definition
+         * from the configurations.php configuration file.
+         */
+        if (!$field = config(str_replace('::', '::configurations/configurations.', $key))) {
+            $field = config(str_replace('::', '::configurations.', $key));
         }
 
         if (is_string($field)) {
@@ -128,32 +113,72 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
             ];
         }
 
-        $type = app(array_get($field, 'type'));
+        /**
+         * Try and get the field type that
+         * the configuration uses. If no exists then
+         * just save the value as it is. If a
+         * field type is found then modify the
+         * value for storage in the database.
+         */
+        $type = $this->fieldTypes->get(array_get($field, 'type'));
 
-        $modifier = $type->getModifier();
+        if ($type instanceof FieldType) {
 
-        if ($modifier instanceof FieldTypeModifier) {
-            $value = $modifier->modify($value);
+            $modifier = $type->getModifier();
+
+            if ($modifier instanceof FieldTypeModifier) {
+                $value = $modifier->modify($value);
+            }
         }
 
-        $configuration->value = $value;
+        $configuration->setValue($value);
 
-        $configuration->save();
+        $this->save($configuration);
 
         return $this;
     }
 
     /**
-     * Get all configurations for a namespace.
+     * Run restore modification on a configuration's value.
      *
-     * @param $namespace
-     * @param $scope
-     * @return ConfigurationCollection
+     * @param $key
+     * @param $value
+     * @return mixed
      */
-    public function getAll($namespace, $scope)
+    protected function restore($key, $value)
     {
-        $configurations = $this->model->where('scope', $scope)->where('key', 'LIKE', $namespace . '::%')->get();
+        /**
+         * Next try and find the field definition
+         * from the configurations.php configuration file.
+         */
+        if (!$field = config(str_replace('::', '::configurations/configurations.', $key))) {
+            $field = config(str_replace('::', '::configurations.', $key));
+        }
 
-        return new ConfigurationCollection($configurations->lists('value', 'key'));
+        if (is_string($field)) {
+            $field = [
+                'type' => $field
+            ];
+        }
+
+        /**
+         * Try and get the field type that
+         * the configuration uses. If no exists then
+         * just return the value as is.
+         */
+        $type = $this->fieldTypes->get(array_get($field, 'type'));
+
+        if (!$type instanceof FieldType) {
+            return $value;
+        }
+
+        /**
+         * If the type CAN be determined then
+         * get the modifier and restore the value
+         * before returning it.
+         */
+        $modifier = $type->getModifier();
+
+        return $modifier->restore($value);
     }
 }

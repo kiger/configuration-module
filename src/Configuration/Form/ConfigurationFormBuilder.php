@@ -39,6 +39,18 @@ class ConfigurationFormBuilder extends FormBuilder
     ];
 
     /**
+     * Fired when the builder is ready to build.
+     *
+     * @throws \Exception
+     */
+    public function onReady()
+    {
+        if (!$this->getScope() && !$this->getEntry()) {
+            throw new \Exception('The $scope parameter is required when creating configuration.');
+        }
+    }
+
+    /**
      * Get the scope.
      *
      * @return null|string

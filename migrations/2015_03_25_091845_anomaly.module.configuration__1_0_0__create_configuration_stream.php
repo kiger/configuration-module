@@ -23,7 +23,7 @@ class AnomalyModuleConfiguration_1_0_0_CreateConfigurationStream extends Migrati
     ];
 
     /**
-     * Stream field assignments.
+     * The stream assignments.
      *
      * @var array
      */

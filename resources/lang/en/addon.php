@@ -2,5 +2,5 @@
 
 return [
     'name'        => 'Configuration',
-    'description' => 'Configuration management.'
+    'description' => 'A configuration management utility.'
 ];

@@ -26,18 +26,18 @@ class ConfigurationFormRepository implements FormRepositoryInterface
     protected $config;
 
     /**
-     * The configurations repository.
-     *
-     * @var ConfigurationRepositoryInterface
-     */
-    protected $configurations;
-
-    /**
      * The application container.
      *
      * @var Container
      */
     protected $container;
+
+    /**
+     * The configurations repository.
+     *
+     * @var ConfigurationRepositoryInterface
+     */
+    protected $configurations;
 
     /**
      * Create a new ConfigurationFormRepositoryInterface instance.

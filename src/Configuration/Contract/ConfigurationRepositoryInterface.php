@@ -1,6 +1,6 @@
 <?php namespace Anomaly\ConfigurationModule\Configuration\Contract;
 
-use Anomaly\ConfigurationModule\Configuration\ConfigurationCollection;
+use Anomaly\Streams\Platform\Entry\Contract\EntryRepositoryInterface;
 
 /**
  * Interface ConfigurationRepositoryInterface
@@ -10,18 +10,8 @@ use Anomaly\ConfigurationModule\Configuration\ConfigurationCollection;
  * @author        Ryan Thompson <ryan@anomaly.is>
  * @package       Anomaly\ConfigurationModule\ConfigurationInterface\Contract
  */
-interface ConfigurationRepositoryInterface
+interface ConfigurationRepositoryInterface extends EntryRepositoryInterface
 {
-
-    /**
-     * Find a configuration by it's key
-     * or return a new instance.
-     *
-     * @param $key
-     * @param $scope
-     * @return ConfigurationInterface
-     */
-    public function findOrNew($key, $scope);
 
     /**
      * Get a configuration value.
@@ -42,13 +32,4 @@ interface ConfigurationRepositoryInterface
      * @return $this
      */
     public function set($key, $scope, $value);
-
-    /**
-     * Get all configurations for a namespace.
-     *
-     * @param $namespace
-     * @param $scope
-     * @return ConfigurationCollection
-     */
-    public function getAll($namespace, $scope);
 }
