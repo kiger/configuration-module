@@ -5,6 +5,7 @@ use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryIn
 use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeCollection;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeModifier;
+use Anomaly\Streams\Platform\Addon\FieldType\FieldTypePresenter;
 use Anomaly\Streams\Platform\Entry\EntryRepository;
 use Illuminate\Config\Repository;
 
@@ -62,9 +63,9 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
      * @param null $default
      * @return mixed
      */
-    public function value($key, $scope, $default = null)
+    public function get($key, $scope, $default = null)
     {
-        return (string)$this->get($key, $scope, $default);
+        return (string)$this->field($key, $scope, $default);
     }
 
     /**
@@ -73,9 +74,9 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
      * @param      $key
      * @param      $scope
      * @param null $default
-     * @return mixed
+     * @return FieldTypePresenter
      */
-    public function get($key, $scope, $default = null)
+    public function field($key, $scope, $default = null)
     {
         /* @var ConfigurationInterface $configuration */
         $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
