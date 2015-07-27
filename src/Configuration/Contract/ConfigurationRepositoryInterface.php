@@ -14,6 +14,16 @@ interface ConfigurationRepositoryInterface extends EntryRepositoryInterface
 {
 
     /**
+     * Get a configuration's raw value.
+     *
+     * @param      $key
+     * @param      $scope
+     * @param null $default
+     * @return mixed
+     */
+    public function value($key, $scope, $default = null);
+
+    /**
      * Get a configuration value.
      *
      * @param      $key

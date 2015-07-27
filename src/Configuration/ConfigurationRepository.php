@@ -55,6 +55,19 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
     }
 
     /**
+     * Get a configuration's raw value.
+     *
+     * @param      $key
+     * @param      $scope
+     * @param null $default
+     * @return mixed
+     */
+    public function value($key, $scope, $default = null)
+    {
+        return (string)$this->get($key, $scope, $default);
+    }
+
+    /**
      * Get a configuration value.
      *
      * @param      $key
@@ -77,8 +90,8 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
          * Next try and find the field definition
          * from the configurations.php configuration file.
          */
-        if (!$field = config(str_replace('::', '::configurations/configurations.', $key))) {
-            $field = config(str_replace('::', '::configurations.', $key));
+        if (!$field = config(str_replace('::', '::configuration/configuration.', $key))) {
+            $field = config(str_replace('::', '::configuration.', $key));
         }
 
         if (is_string($field)) {
@@ -139,8 +152,8 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
          * Next try and find the field definition
          * from the configurations.php configuration file.
          */
-        if (!$field = config(str_replace('::', '::configurations/configurations.', $key))) {
-            $field = config(str_replace('::', '::configurations.', $key));
+        if (!$field = config(str_replace('::', '::configuration/configuration.', $key))) {
+            $field = config(str_replace('::', '::configuration.', $key));
         }
 
         if (is_string($field)) {
