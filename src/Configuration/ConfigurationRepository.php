@@ -73,7 +73,43 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
             $value = $configuration->getValue();
         }
 
-        return $this->restore($key, $value);
+        /**
+         * Next try and find the field definition
+         * from the configurations.php configuration file.
+         */
+        if (!$field = config(str_replace('::', '::configurations/configurations.', $key))) {
+            $field = config(str_replace('::', '::configurations.', $key));
+        }
+
+        if (is_string($field)) {
+            $field = [
+                'type' => $field
+            ];
+        }
+
+        /**
+         * Try and get the field type that
+         * the configuration uses. If no exists then
+         * just return the value as is.
+         */
+        $type = $this->fieldTypes->get(array_get($field, 'type'));
+
+        if (!$type instanceof FieldType) {
+            return $value;
+        }
+
+        $type->setEntry($configuration);
+
+        /**
+         * If the type CAN be determined then
+         * get the modifier and restore the value
+         * before returning it.
+         */
+        $modifier = $type->getModifier();
+
+        $type->setValue($modifier->restore($value));
+
+        return $type->getPresenter();
     }
 
     /**
@@ -136,49 +172,5 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
         $this->save($configuration);
 
         return $this;
-    }
-
-    /**
-     * Run restore modification on a configuration's value.
-     *
-     * @param $key
-     * @param $value
-     * @return mixed
-     */
-    protected function restore($key, $value)
-    {
-        /**
-         * Next try and find the field definition
-         * from the configurations.php configuration file.
-         */
-        if (!$field = config(str_replace('::', '::configurations/configurations.', $key))) {
-            $field = config(str_replace('::', '::configurations.', $key));
-        }
-
-        if (is_string($field)) {
-            $field = [
-                'type' => $field
-            ];
-        }
-
-        /**
-         * Try and get the field type that
-         * the configuration uses. If no exists then
-         * just return the value as is.
-         */
-        $type = $this->fieldTypes->get(array_get($field, 'type'));
-
-        if (!$type instanceof FieldType) {
-            return $value;
-        }
-
-        /**
-         * If the type CAN be determined then
-         * get the modifier and restore the value
-         * before returning it.
-         */
-        $modifier = $type->getModifier();
-
-        return $modifier->restore($value);
     }
 }
