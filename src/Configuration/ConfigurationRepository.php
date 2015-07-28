@@ -65,7 +65,13 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
      */
     public function get($key, $scope, $default = null)
     {
-        return $this->field($key, $scope, $default)->getObject()->getValue();
+        $value = $this->field($key, $scope, $default);
+
+        if ($value instanceof FieldTypePresenter) {
+            return $value->getObject()->getValue();
+        }
+
+        return $value;
     }
 
     /**
