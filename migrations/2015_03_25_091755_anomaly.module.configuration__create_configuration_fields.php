@@ -3,13 +3,13 @@
 use Anomaly\Streams\Platform\Database\Migration\Migration;
 
 /**
- * Class AnomalyModuleConfiguration_1_0_0_CreateConfigurationFields
+ * Class AnomalyModuleConfigurationCreateConfigurationFields
  *
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
  */
-class AnomalyModuleConfiguration_1_0_0_CreateConfigurationFields extends Migration
+class AnomalyModuleConfigurationCreateConfigurationFields extends Migration
 {
 
     /**
