@@ -21,6 +21,20 @@ class ConfigurationFormBuilder extends FormBuilder
     protected $scope = null;
 
     /**
+     * No model needed.
+     *
+     * @var bool
+     */
+    protected $model = false;
+
+    /**
+     * The form fields.
+     *
+     * @var ConfigurationFormFields
+     */
+    protected $fields = ConfigurationFormFields::class;
+
+    /**
      * The form actions handler.
      *
      * @var string

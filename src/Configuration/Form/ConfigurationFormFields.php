@@ -2,6 +2,7 @@
 
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface;
 use Illuminate\Config\Repository;
+use Illuminate\Contracts\Bus\SelfHandling;
 
 /**
  * Class ConfigurationFormFields
@@ -11,7 +12,7 @@ use Illuminate\Config\Repository;
  * @author        Ryan Thompson <ryan@anomaly.is>
  * @package       Anomaly\ConfigurationModule\Configuration\Form
  */
-class ConfigurationFormFields
+class ConfigurationFormFields implements SelfHandling
 {
 
     /**
@@ -38,7 +39,7 @@ class ConfigurationFormFields
      */
     public function handle(ConfigurationFormBuilder $builder, ConfigurationRepositoryInterface $configuration)
     {
-        $scope = $builder->getScope();
+        $scope     = $builder->getScope();
         $namespace = $builder->getFormEntry() . '::';
 
         /**
