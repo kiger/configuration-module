@@ -119,6 +119,8 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
         }
 
         $type->setEntry($configuration);
+        $type->mergeRules(array_get($field, 'rules', []));
+        $type->mergeConfig(array_get($field, 'config', []));
 
         /**
          * If the type CAN be determined then
