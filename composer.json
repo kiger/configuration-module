@@ -1,7 +1,7 @@
 {
     "name": "anomaly/configuration-module",
     "type": "streams-addon",
-    "description": "A configuration management utility.",
+    "description": "Addon configuration management for the Streams Platform.",
     "keywords": [
         "streams module",
         "streams addon",
@@ -23,11 +23,6 @@
     "autoload": {
         "psr-4": {
             "Anomaly\\ConfigurationModule\\": "src/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-1.0/master": "1.0.x-dev"
         }
     }
 }

@@ -1,5 +1,6 @@
 <?php namespace Anomaly\ConfigurationModule\Configuration\Contract;
 
+use Anomaly\ConfigurationModule\Configuration\ConfigurationModel;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypePresenter;
 use Anomaly\Streams\Platform\Entry\Contract\EntryRepositoryInterface;
 
@@ -15,32 +16,40 @@ interface ConfigurationRepositoryInterface extends EntryRepositoryInterface
 {
 
     /**
-     * Get a configuration value.
+     * Get a configuration.
      *
-     * @param      $key
-     * @param      $scope
-     * @param null $default
-     * @return mixed
+     * @param $key
+     * @param $scope
+     * @return ConfigurationModel|ConfigurationInterface|null
      */
-    public function get($key, $scope, $default = null);
+    public function get($key, $scope);
 
     /**
-     * Get a configuration's raw value.
-     *
-     * @param      $key
-     * @param      $scope
-     * @param null $default
-     * @return FieldTypePresenter
-     */
-    public function field($key, $scope, $default = null);
-
-    /**
-     * Set a configuration value.
+     * Set a configurations value.
      *
      * @param $key
      * @param $scope
      * @param $value
-     * @return $this
+     * @return bool
      */
     public function set($key, $scope, $value);
+
+    /**
+     * Get a configuration value presenter instance.
+     *
+     * @param $key
+     * @param $scope
+     * @return FieldTypePresenter|null
+     */
+    public function value($key, $scope);
+
+    /**
+     * Find a configuration by it's key
+     * or return a new instance.
+     *
+     * @param $key
+     * @param $scope
+     * @return ConfigurationInterface
+     */
+    public function findByKeyAndScopeOrNew($key, $scope);
 }

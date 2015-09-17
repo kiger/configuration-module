@@ -7,4 +7,4 @@
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/15919ee3-2cac-4e59-b54d-d79afbcf293c/small.png)](https://insight.sensiolabs.com/projects/15919ee3-2cac-4e59-b54d-d79afbcf293c)
 
-A configuration management utility.
+Addon configuration management.

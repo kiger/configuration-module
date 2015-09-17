@@ -19,7 +19,7 @@ class ConfigurationModuleServiceProvider extends AddonServiceProvider
      * @var array
      */
     protected $plugins = [
-        'Anomaly\ConfigurationModule\Configuration\ConfigurationPlugin'
+        'Anomaly\ConfigurationModule\ConfigurationModulePlugin'
     ];
 
     /**

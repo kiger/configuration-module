@@ -1,28 +1,28 @@
-<?php namespace Anomaly\ConfigurationModule\Configuration;
+<?php namespace Anomaly\ConfigurationModule;
 
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface;
 use Anomaly\Streams\Platform\Addon\Plugin\Plugin;
 
 /**
- * Class ConfigurationPlugin
+ * Class ConfigurationModulePlugin
  *
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\ConfigurationModule\Configuration
+ * @package       Anomaly\ConfigurationModule
  */
-class ConfigurationPlugin extends Plugin
+class ConfigurationModulePlugin extends Plugin
 {
 
     /**
-     * The configurations repository.
+     * The configuration repository.
      *
      * @var ConfigurationRepositoryInterface
      */
     protected $configurations;
 
     /**
-     * Create a new ConfigurationPlugin instance.
+     * Create a new ConfigurationModulePlugin instance.
      *
      * @param ConfigurationRepositoryInterface $configurations
      */
@@ -39,7 +39,8 @@ class ConfigurationPlugin extends Plugin
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('configuration_get', [$this->configurations, 'get'])
+            new \Twig_SimpleFunction('configurations_get', [$this->configurations, 'get']),
+            new \Twig_SimpleFunction('configurations_value', [$this->configurations, 'value'])
         ];
     }
 }

@@ -2,9 +2,8 @@
 
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationInterface;
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface;
-use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
+use Anomaly\ConfigurationModule\Configuration\ConfigurationCollection;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeCollection;
-use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeModifier;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypePresenter;
 use Anomaly\Streams\Platform\Entry\EntryRepository;
 use Illuminate\Config\Repository;
@@ -28,18 +27,11 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
     protected $model;
 
     /**
-     * The config repository.
+     * The configurations collection.
      *
-     * @var Repository
+     * @var ConfigurationCollection
      */
-    protected $config;
-
-    /**
-     * The field type collection.
-     *
-     * @var FieldTypeCollection
-     */
-    protected $fieldTypes;
+    protected $configurations;
 
     /**
      * Create a new ConfigurationRepositoryInterface instance.
@@ -48,151 +40,76 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
      * @param Repository          $config
      * @param FieldTypeCollection $fieldTypes
      */
-    public function __construct(ConfigurationModel $model, Repository $config, FieldTypeCollection $fieldTypes)
+    public function __construct(ConfigurationModel $model)
     {
-        $this->model      = $model;
-        $this->config     = $config;
-        $this->fieldTypes = $fieldTypes;
+        $this->model = $model;
+
+        $this->configurations = $this->model->all();
     }
 
     /**
-     * Get a configuration's raw value.
+     * Get a configuration.
      *
-     * @param      $key
-     * @param      $scope
-     * @param null $default
-     * @return mixed
+     * @param $key
+     * @param $scope
+     * @return ConfigurationInterface|null
      */
-    public function get($key, $scope, $default = null)
+    public function get($key, $scope)
     {
-        $value = $this->field($key, $scope, $default);
-
-        if ($value instanceof FieldTypePresenter) {
-            return $value->getObject()->getValue();
-        }
-
-        return $value;
+        return $this->configurations->get($key . $scope);
     }
 
     /**
-     * Get a configuration value.
-     *
-     * @param      $key
-     * @param      $scope
-     * @param null $default
-     * @return FieldTypePresenter
-     */
-    public function field($key, $scope, $default = null)
-    {
-        /* @var ConfigurationInterface $configuration */
-        $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
-
-        if (!$configuration) {
-            return $this->config->get($key, $default);
-        } else {
-            $value = $configuration->getValue();
-        }
-
-        /**
-         * Next try and find the field definition
-         * from the configurations.php configuration file.
-         */
-        if (!$field = config(str_replace('::', '::configuration/configuration.', $key))) {
-            $field = config(str_replace('::', '::configuration.', $key));
-        }
-
-        if (is_string($field)) {
-            $field = [
-                'type' => $field
-            ];
-        }
-
-        /**
-         * Try and get the field type that
-         * the configuration uses. If no exists then
-         * just return the value as is.
-         */
-        $type = $this->fieldTypes->get(array_get($field, 'type'));
-
-        if (!$type instanceof FieldType) {
-            return $value;
-        }
-
-        $type->setEntry($configuration);
-        $type->mergeRules(array_get($field, 'rules', []));
-        $type->mergeConfig(array_get($field, 'config', []));
-
-        /**
-         * If the type CAN be determined then
-         * get the modifier and restore the value
-         * before returning it.
-         */
-        $modifier = $type->getModifier();
-
-        $type->setValue($modifier->restore($value));
-
-        return $type->getPresenter();
-    }
-
-    /**
-     * Set a configuration value.
+     * Set a configurations value.
      *
      * @param $key
      * @param $scope
      * @param $value
-     * @return $this
+     * @return bool
      */
     public function set($key, $scope, $value)
     {
-        /* @var ConfigurationInterface $configuration */
-        $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
-
-        /**
-         * If nothing exists yet then
-         * create a new instance.
-         */
-        if (!$configuration && $configuration = $this->model->newInstance()) {
-            $configuration
-                ->setKey($key)
-                ->setScope($scope);
-        }
-
-        /**
-         * Next try and find the field definition
-         * from the configurations.php configuration file.
-         */
-        if (!$field = config(str_replace('::', '::configuration/configuration.', $key))) {
-            $field = config(str_replace('::', '::configuration.', $key));
-        }
-
-        if (is_string($field)) {
-            $field = [
-                'type' => $field
-            ];
-        }
-
-        /**
-         * Try and get the field type that
-         * the configuration uses. If no exists then
-         * just save the value as it is. If a
-         * field type is found then modify the
-         * value for storage in the database.
-         */
-        $type = $this->fieldTypes->get(array_get($field, 'type'));
-
-        if ($type instanceof FieldType) {
-
-            $modifier = $type->getModifier();
-
-            if ($modifier instanceof FieldTypeModifier) {
-                $value = $modifier->modify($value);
-            }
-        }
+        $configuration = $this->findByKeyAndScopeOrNew($key, $scope);
 
         $configuration->setValue($value);
 
-        $this->save($configuration);
+        return $this->save($configuration);
+    }
 
-        return $this;
+    /**
+     * Get a configuration value presenter instance.
+     *
+     * @param $key
+     * @param $scope
+     * @return FieldTypePresenter|null
+     */
+    public function value($key, $scope)
+    {
+        if ($configuration = $this->get($key, $scope)) {
+            return $configuration->value();
+        }
+
+        return null;
+    }
+
+    /**
+     * Find a configuration by it's key
+     * or return a new instance.
+     *
+     * @param $key
+     * @param $scope
+     * @return ConfigurationInterface
+     */
+    public function findByKeyAndScopeOrNew($key, $scope)
+    {
+        if (!$configuration = $this->model->where('key', $key)->where('scope', $scope)->first()) {
+
+            $configuration = $this->model->newInstance();
+
+            $configuration->setKey($key);
+            $configuration->setScope($scope);
+        }
+
+        return $configuration;
     }
 }

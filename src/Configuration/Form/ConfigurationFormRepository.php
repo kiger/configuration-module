@@ -79,11 +79,12 @@ class ConfigurationFormRepository implements FormRepositoryInterface
 
         /* @var FieldType $field */
         foreach ($builder->getFormFields() as $field) {
-            $this->configurations->set(
-                $namespace . $field->getField(),
-                $builder->getScope(),
-                $builder->getFormValue($field->getInputName())
-            );
+
+            $scope = $builder->getScope();
+            $key   = $namespace . $field->getField();
+            $value = $builder->getFormValue($field->getInputName());
+
+            $this->configurations->set($key, $scope, $value);
         }
     }
 }
