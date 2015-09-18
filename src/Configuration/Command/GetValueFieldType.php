@@ -50,8 +50,8 @@ class GetValueFieldType implements SelfHandling
         $value = array_get($this->configuration->getAttributes(), 'value');
 
         // Try and find the configuration's field configuration.
-        if (!$field = $config->get(str_replace('::', '::configurations/configurations.', $key))) {
-            $field = $config->get(str_replace('::', '::configurations.', $key));
+        if (!$field = $config->get(str_replace('::', '::configuration/configuration.', $key))) {
+            $field = $config->get(str_replace('::', '::configuration.', $key));
         }
 
         // Convert short syntax.

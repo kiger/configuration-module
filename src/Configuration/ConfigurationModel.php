@@ -27,6 +27,16 @@ class ConfigurationModel extends ConfigurationConfigurationEntryModel implements
     protected $cacheMinutes = 99999;
 
     /**
+     * Get the key.
+     *
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
+
+    /**
      * Set the key.
      *
      * @param $key

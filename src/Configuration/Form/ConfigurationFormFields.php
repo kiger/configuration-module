@@ -102,11 +102,11 @@ class ConfigurationFormFields implements SelfHandling
             );
 
             // Get the value defaulting to the default value.
-            $field['value'] = $configuration->get(
-                $namespace . $slug,
-                $scope,
-                array_get($field['config'], 'default_value')
-            );
+            if ($applied = $configuration->get($namespace . $slug, $scope)) {
+                $field['value'] = $applied->getValue();
+            } else {
+                $field['value'] = array_get($field['config'], 'default_value');
+            }
         }
 
         $builder->setFields($fields);
