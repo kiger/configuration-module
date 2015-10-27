@@ -14,15 +14,6 @@ class ConfigurationModuleServiceProvider extends AddonServiceProvider
 {
 
     /**
-     * The addon plugin.
-     *
-     * @var array
-     */
-    protected $plugins = [
-        'Anomaly\ConfigurationModule\ConfigurationModulePlugin'
-    ];
-
-    /**
      * The singleton bindings.
      *
      * @var array
