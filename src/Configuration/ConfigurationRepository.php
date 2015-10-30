@@ -2,7 +2,6 @@
 
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationInterface;
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface;
-use Anomaly\ConfigurationModule\Configuration\ConfigurationCollection;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeCollection;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypePresenter;
 use Anomaly\Streams\Platform\Entry\EntryRepository;
@@ -77,16 +76,33 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
     }
 
     /**
+     * Get a configuration value.
+     *
+     * @param      $key
+     * @param      $scope
+     * @param null $default
+     * @return null|mixed
+     */
+    public function value($key, $scope, $default = null)
+    {
+        if ($configuration = $this->get($key, $scope)) {
+            return $configuration->getValue();
+        }
+
+        return null;
+    }
+
+    /**
      * Get a configuration value presenter instance.
      *
      * @param $key
      * @param $scope
      * @return FieldTypePresenter|null
      */
-    public function value($key, $scope)
+    public function presenter($key, $scope)
     {
         if ($configuration = $this->get($key, $scope)) {
-            return $configuration->value();
+            return $configuration->getFieldTypePresenter('value');
         }
 
         return null;

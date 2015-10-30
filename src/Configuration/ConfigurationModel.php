@@ -1,9 +1,9 @@
 <?php namespace Anomaly\ConfigurationModule\Configuration;
 
-use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationInterface;
 use Anomaly\ConfigurationModule\Configuration\Command\GetValueFieldType;
 use Anomaly\ConfigurationModule\Configuration\Command\GetValuePresenter;
 use Anomaly\ConfigurationModule\Configuration\Command\ModifyValue;
+use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationInterface;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldTypePresenter;
 use Anomaly\Streams\Platform\Model\Configuration\ConfigurationConfigurationEntryModel;
@@ -122,13 +122,21 @@ class ConfigurationModel extends ConfigurationConfigurationEntryModel implements
     }
 
     /**
-     * Return the related value
-     * field type presenter.
+     * Get the field type's presenter
+     * for a given field slug.
      *
+     * We're overriding this to catch
+     * the "value" key.
+     *
+     * @param $fieldSlug
      * @return FieldTypePresenter
      */
-    public function value()
+    public function getFieldTypePresenter($fieldSlug)
     {
-        return $this->dispatch(new GetValuePresenter($this));
+        if ($fieldSlug == 'value') {
+            return $this->dispatch(new GetValuePresenter($this));
+        }
+
+        return parent::getFieldTypePresenter($fieldSlug);
     }
 }
