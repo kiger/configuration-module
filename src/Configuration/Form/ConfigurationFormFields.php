@@ -83,10 +83,22 @@ class ConfigurationFormFields implements SelfHandling
                 )
             );
 
+            // Default the warning.
+            if (trans()->has(
+                $warning = array_get(
+                    $field,
+                    'warning',
+                    $namespace . 'setting.' . $slug . '.warning'
+                )
+            )
+            ) {
+                $field['warning'] = trans($warning);
+            }
+
             // Default the placeholder.
             $field['config']['placeholder'] = trans(
                 array_get(
-                    $field['config'],
+                    $field,
                     'placeholder',
                     $namespace . 'configuration.' . $slug . '.placeholder'
                 )
