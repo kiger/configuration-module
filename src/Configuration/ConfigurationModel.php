@@ -118,6 +118,10 @@ class ConfigurationModel extends ConfigurationConfigurationEntryModel implements
         /* @var FieldType $type */
         $type = $this->dispatch(new GetValueFieldType($this));
 
+        if (!$type) {
+            return $this->attributes['value'];
+        }
+
         return $type->getValue();
     }
 

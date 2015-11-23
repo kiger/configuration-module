@@ -75,11 +75,23 @@ class ConfigurationFormFields implements SelfHandling
             $field['config'] = array_get($field, 'config', []);
 
             // Default the label.
+            if (trans()->has(
+                $label = array_get(
+                    $field,
+                    'label',
+                    $namespace . 'configuration.' . $slug . '.label'
+                )
+            )
+            ) {
+                $field['label'] = trans($label);
+            }
+
+            // Default the label.
             $field['label'] = trans(
                 array_get(
                     $field,
                     'label',
-                    $namespace . 'configuration.' . $slug . '.label'
+                    $namespace . 'configuration.' . $slug . '.name'
                 )
             );
 
@@ -88,7 +100,7 @@ class ConfigurationFormFields implements SelfHandling
                 $warning = array_get(
                     $field,
                     'warning',
-                    $namespace . 'setting.' . $slug . '.warning'
+                    $namespace . 'configuration.' . $slug . '.warning'
                 )
             )
             ) {
@@ -105,13 +117,16 @@ class ConfigurationFormFields implements SelfHandling
             );
 
             // Default the instructions.
-            $field['instructions'] = trans(
-                array_get(
+            if (trans()->has(
+                $instructions = array_get(
                     $field,
                     'instructions',
                     $namespace . 'configuration.' . $slug . '.instructions'
                 )
-            );
+            )
+            ) {
+                $field['instructions'] = trans($instructions);
+            }
 
             // Get the value defaulting to the default value.
             if ($applied = $configuration->get($namespace . $slug, $scope)) {
