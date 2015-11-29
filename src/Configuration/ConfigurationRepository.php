@@ -81,7 +81,7 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
      * @param      $key
      * @param      $scope
      * @param null $default
-     * @return null|mixed
+     * @return mixed|null
      */
     public function value($key, $scope, $default = null)
     {
@@ -89,7 +89,7 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
             return $configuration->getValue();
         }
 
-        return null;
+        return $default;
     }
 
     /**
