@@ -45,6 +45,15 @@ interface ConfigurationRepositoryInterface extends EntryRepositoryInterface
     public function value($key, $scope, $default = null);
 
     /**
+     * Get a configuration value presenter instance.
+     *
+     * @param $key
+     * @param $scope
+     * @return FieldTypePresenter|null
+     */
+    public function presenter($key, $scope);
+
+    /**
      * Find a configuration by it's key
      * or return a new instance.
      *
