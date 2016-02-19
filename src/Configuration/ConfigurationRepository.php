@@ -128,4 +128,17 @@ class ConfigurationRepository extends EntryRepository implements ConfigurationRe
 
         return $configuration;
     }
+
+    /**
+     * Purge a namespace's configuration.
+     *
+     * @param $namespace
+     * @return $this
+     */
+    public function purge($namespace)
+    {
+        $this->model->where('key', 'LIKE', $namespace . '::%')->delete();
+
+        return $this;
+    }
 }

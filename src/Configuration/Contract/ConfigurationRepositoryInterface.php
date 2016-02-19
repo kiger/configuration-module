@@ -62,4 +62,12 @@ interface ConfigurationRepositoryInterface extends EntryRepositoryInterface
      * @return ConfigurationInterface
      */
     public function findByKeyAndScopeOrNew($key, $scope);
+
+    /**
+     * Purge a namespace's configuration.
+     *
+     * @param $namespace
+     * @return $this
+     */
+    public function purge($namespace);
 }
