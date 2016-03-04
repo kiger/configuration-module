@@ -5,9 +5,9 @@ use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 /**
  * Class ConfigurationFormBuilder
  *
- * @link          http://anomaly.is/streams-platform
- * @author        AnomalyLabs, Inc. <hello@anomaly.is>
- * @author        Ryan Thompson <ryan@anomaly.is>
+ * @link          http://pyrocms.com/
+ * @author        PyroCMS, Inc. <support@pyrocms.com>
+ * @author        Ryan Thompson <ryan@pyrocms.com>
  * @package       Anomaly\ConfigurationModule\Configuration\Form
  */
 class ConfigurationFormBuilder extends FormBuilder
@@ -19,6 +19,20 @@ class ConfigurationFormBuilder extends FormBuilder
      * @var null|string
      */
     protected $scope = null;
+
+    /**
+     * No model needed.
+     *
+     * @var bool
+     */
+    protected $model = false;
+
+    /**
+     * The form fields.
+     *
+     * @var ConfigurationFormFields
+     */
+    protected $fields = ConfigurationFormFields::class;
 
     /**
      * The form actions handler.
@@ -37,6 +51,18 @@ class ConfigurationFormBuilder extends FormBuilder
     protected $buttons = [
         'cancel'
     ];
+
+    /**
+     * Fired when the builder is ready to build.
+     *
+     * @throws \Exception
+     */
+    public function onReady()
+    {
+        if (!$this->getScope() && !$this->getEntry()) {
+            throw new \Exception('The $scope parameter is required when creating configuration.');
+        }
+    }
 
     /**
      * Get the scope.

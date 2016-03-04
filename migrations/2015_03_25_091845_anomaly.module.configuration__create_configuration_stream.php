@@ -3,13 +3,13 @@
 use Anomaly\Streams\Platform\Database\Migration\Migration;
 
 /**
- * Class AnomalyModuleConfiguration_1_0_0_CreateConfigurationStream
+ * Class AnomalyModuleConfigurationCreateConfigurationStream
  *
- * @link          http://anomaly.is/streams-platform
- * @author        AnomalyLabs, Inc. <hello@anomaly.is>
- * @author        Ryan Thompson <ryan@anomaly.is>
+ * @link          http://pyrocms.com/
+ * @author        PyroCMS, Inc. <support@pyrocms.com>
+ * @author        Ryan Thompson <ryan@pyrocms.com>
  */
-class AnomalyModuleConfiguration_1_0_0_CreateConfigurationStream extends Migration
+class AnomalyModuleConfigurationCreateConfigurationStream extends Migration
 {
 
     /**
@@ -23,7 +23,7 @@ class AnomalyModuleConfiguration_1_0_0_CreateConfigurationStream extends Migrati
     ];
 
     /**
-     * Stream field assignments.
+     * The stream assignments.
      *
      * @var array
      */

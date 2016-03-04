@@ -1,17 +1,57 @@
 <?php namespace Anomaly\ConfigurationModule\Configuration\Contract;
 
-use Anomaly\ConfigurationModule\Configuration\ConfigurationCollection;
+use Anomaly\ConfigurationModule\Configuration\ConfigurationModel;
+use Anomaly\Streams\Platform\Addon\FieldType\FieldTypePresenter;
+use Anomaly\Streams\Platform\Entry\Contract\EntryRepositoryInterface;
 
 /**
  * Interface ConfigurationRepositoryInterface
  *
- * @link          http://anomaly.is/streams-platform
- * @author        AnomalyLabs, Inc. <hello@anomaly.is>
- * @author        Ryan Thompson <ryan@anomaly.is>
+ * @link          http://pyrocms.com/
+ * @author        PyroCMS, Inc. <support@pyrocms.com>
+ * @author        Ryan Thompson <ryan@pyrocms.com>
  * @package       Anomaly\ConfigurationModule\ConfigurationInterface\Contract
  */
-interface ConfigurationRepositoryInterface
+interface ConfigurationRepositoryInterface extends EntryRepositoryInterface
 {
+
+    /**
+     * Get a configuration.
+     *
+     * @param $key
+     * @param $scope
+     * @return ConfigurationModel|ConfigurationInterface|null
+     */
+    public function get($key, $scope);
+
+    /**
+     * Set a configurations value.
+     *
+     * @param $key
+     * @param $scope
+     * @param $value
+     * @return bool
+     */
+    public function set($key, $scope, $value);
+
+    /**
+     * Get a configuration value presenter instance.
+     *
+     * @param      $key
+     * @param      $scope
+     * @param null $default
+     * @return FieldTypePresenter|null
+     */
+    public function value($key, $scope, $default = null);
+
+    /**
+     * Get a configuration value presenter instance.
+     *
+     * @param $key
+     * @param $scope
+     * @return FieldTypePresenter|null
+     */
+    public function presenter($key, $scope);
 
     /**
      * Find a configuration by it's key
@@ -21,34 +61,13 @@ interface ConfigurationRepositoryInterface
      * @param $scope
      * @return ConfigurationInterface
      */
-    public function findOrNew($key, $scope);
+    public function findByKeyAndScopeOrNew($key, $scope);
 
     /**
-     * Get a configuration value.
-     *
-     * @param      $key
-     * @param      $scope
-     * @param null $default
-     * @return mixed
-     */
-    public function get($key, $scope, $default = null);
-
-    /**
-     * Set a configuration value.
-     *
-     * @param $key
-     * @param $scope
-     * @param $value
-     * @return $this
-     */
-    public function set($key, $scope, $value);
-
-    /**
-     * Get all configurations for a namespace.
+     * Purge a namespace's configuration.
      *
      * @param $namespace
-     * @param $scope
-     * @return ConfigurationCollection
+     * @return $this
      */
-    public function getAll($namespace, $scope);
+    public function purge($namespace);
 }

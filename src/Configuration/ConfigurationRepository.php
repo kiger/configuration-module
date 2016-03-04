@@ -2,18 +2,20 @@
 
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationInterface;
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface;
-use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeModifier;
+use Anomaly\Streams\Platform\Addon\FieldType\FieldTypeCollection;
+use Anomaly\Streams\Platform\Addon\FieldType\FieldTypePresenter;
+use Anomaly\Streams\Platform\Entry\EntryRepository;
 use Illuminate\Config\Repository;
 
 /**
  * Class ConfigurationRepositoryInterface
  *
- * @link          http://anomaly.is/streams-platform
- * @author        AnomalyLabs, Inc. <hello@anomaly.is>
- * @author        Ryan Thompson <ryan@anomaly.is>
+ * @link          http://pyrocms.com/
+ * @author        PyroCMS, Inc. <support@pyrocms.com>
+ * @author        Ryan Thompson <ryan@pyrocms.com>
  * @package       Anomaly\ConfigurationModule\ConfigurationInterface
  */
-class ConfigurationRepository implements ConfigurationRepositoryInterface
+class ConfigurationRepository extends EntryRepository implements ConfigurationRepositoryInterface
 {
 
     /**
@@ -24,22 +26,86 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
     protected $model;
 
     /**
-     * The config repository.
+     * The configurations collection.
      *
-     * @var Repository
+     * @var ConfigurationCollection
      */
-    protected $config;
+    protected $configurations;
 
     /**
      * Create a new ConfigurationRepositoryInterface instance.
      *
-     * @param ConfigurationModel $model
-     * @param Repository         $config
+     * @param ConfigurationModel  $model
+     * @param Repository          $config
+     * @param FieldTypeCollection $fieldTypes
      */
-    public function __construct(ConfigurationModel $model, Repository $config)
+    public function __construct(ConfigurationModel $model)
     {
-        $this->model  = $model;
-        $this->config = $config;
+        $this->model = $model;
+
+        $this->configurations = $this->model->all();
+    }
+
+    /**
+     * Get a configuration.
+     *
+     * @param $key
+     * @param $scope
+     * @return ConfigurationInterface|null
+     */
+    public function get($key, $scope)
+    {
+        return $this->configurations->get($key . $scope);
+    }
+
+    /**
+     * Set a configurations value.
+     *
+     * @param $key
+     * @param $scope
+     * @param $value
+     * @return bool
+     */
+    public function set($key, $scope, $value)
+    {
+        $configuration = $this->findByKeyAndScopeOrNew($key, $scope);
+
+        $configuration->setValue($value);
+
+        return $this->save($configuration);
+    }
+
+    /**
+     * Get a configuration value.
+     *
+     * @param      $key
+     * @param      $scope
+     * @param null $default
+     * @return mixed|null
+     */
+    public function value($key, $scope, $default = null)
+    {
+        if ($configuration = $this->get($key, $scope)) {
+            return $configuration->getValue();
+        }
+
+        return $default;
+    }
+
+    /**
+     * Get a configuration value presenter instance.
+     *
+     * @param $key
+     * @param $scope
+     * @return FieldTypePresenter|null
+     */
+    public function presenter($key, $scope)
+    {
+        if ($configuration = $this->get($key, $scope)) {
+            return $configuration->getFieldTypePresenter('value');
+        }
+
+        return null;
     }
 
     /**
@@ -50,110 +116,29 @@ class ConfigurationRepository implements ConfigurationRepositoryInterface
      * @param $scope
      * @return ConfigurationInterface
      */
-    public function findOrNew($key, $scope)
+    public function findByKeyAndScopeOrNew($key, $scope)
     {
-        $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
+        if (!$configuration = $this->model->where('key', $key)->where('scope', $scope)->first()) {
 
-        if (!$configuration) {
-            return $this->model->newInstance();
+            $configuration = $this->model->newInstance();
+
+            $configuration->setKey($key);
+            $configuration->setScope($scope);
         }
 
         return $configuration;
     }
 
     /**
-     * Get a configuration value.
-     *
-     * @param      $key
-     * @param      $scope
-     * @param null $default
-     * @return mixed
-     */
-    public function get($key, $scope, $default = null)
-    {
-        $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
-
-        if (!$configuration) {
-            return $this->config->get($key, $default);
-        }
-
-        if (!$field = config(str_replace('::', '::configuration/configuration.', $key))) {
-            $field = config(str_replace('::', '::configuration.', $key));
-        }
-
-        if (is_string($field)) {
-            $field = [
-                'type' => $field
-            ];
-        }
-
-        $type = app(array_get($field, 'type'));
-
-        $modifier = $type->getModifier();
-
-        if ($modifier instanceof FieldTypeModifier) {
-            return $modifier->restore($configuration->value);
-        }
-
-        return $configuration->value;
-    }
-
-    /**
-     * Set a configuration value.
-     *
-     * @param $key
-     * @param $scope
-     * @param $value
-     * @return $this
-     */
-    public function set($key, $scope, $value)
-    {
-        $configuration = $this->model->where('scope', $scope)->where('key', $key)->first();
-
-        if (!$configuration) {
-
-            $configuration = $this->model->newInstance();
-
-            $configuration->key   = $key;
-            $configuration->scope = $scope;
-        }
-
-        if (!$field = config(str_replace('::', '::configuration/configuration.', $key))) {
-            $field = config(str_replace('::', '::configuration.', $key));
-        }
-
-        if (is_string($field)) {
-            $field = [
-                'type' => $field
-            ];
-        }
-
-        $type = app(array_get($field, 'type'));
-
-        $modifier = $type->getModifier();
-
-        if ($modifier instanceof FieldTypeModifier) {
-            $value = $modifier->modify($value);
-        }
-
-        $configuration->value = $value;
-
-        $configuration->save();
-
-        return $this;
-    }
-
-    /**
-     * Get all configurations for a namespace.
+     * Purge a namespace's configuration.
      *
      * @param $namespace
-     * @param $scope
-     * @return ConfigurationCollection
+     * @return $this
      */
-    public function getAll($namespace, $scope)
+    public function purge($namespace)
     {
-        $configurations = $this->model->where('scope', $scope)->where('key', 'LIKE', $namespace . '::%')->get();
+        $this->model->where('key', 'LIKE', $namespace . '::%')->delete();
 
-        return new ConfigurationCollection($configurations->lists('value', 'key'));
+        return $this;
     }
 }

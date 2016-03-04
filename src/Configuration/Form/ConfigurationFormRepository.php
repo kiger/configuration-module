@@ -10,9 +10,9 @@ use Illuminate\Container\Container;
 /**
  * Class ConfigurationFormRepositoryInterface
  *
- * @link          http://anomaly.is/streams-platform
- * @author        AnomalyLabs, Inc. <hello@anomaly.is>
- * @author        Ryan Thompson <ryan@anomaly.is>
+ * @link          http://pyrocms.com/
+ * @author        PyroCMS, Inc. <support@pyrocms.com>
+ * @author        Ryan Thompson <ryan@pyrocms.com>
  * @package       Anomaly\ConfigurationModule\Configuration\Form
  */
 class ConfigurationFormRepository implements FormRepositoryInterface
@@ -26,18 +26,18 @@ class ConfigurationFormRepository implements FormRepositoryInterface
     protected $config;
 
     /**
-     * The configurations repository.
-     *
-     * @var ConfigurationRepositoryInterface
-     */
-    protected $configurations;
-
-    /**
      * The application container.
      *
      * @var Container
      */
     protected $container;
+
+    /**
+     * The configurations repository.
+     *
+     * @var ConfigurationRepositoryInterface
+     */
+    protected $configurations;
 
     /**
      * Create a new ConfigurationFormRepositoryInterface instance.
@@ -79,11 +79,12 @@ class ConfigurationFormRepository implements FormRepositoryInterface
 
         /* @var FieldType $field */
         foreach ($builder->getFormFields() as $field) {
-            $this->configurations->set(
-                $namespace . $field->getField(),
-                $builder->getScope(),
-                $builder->getFormValue($field->getInputName())
-            );
+
+            $scope = $builder->getScope();
+            $key   = $namespace . $field->getField();
+            $value = $builder->getFormValue($field->getInputName());
+
+            $this->configurations->set($key, $scope, $value);
         }
     }
 }

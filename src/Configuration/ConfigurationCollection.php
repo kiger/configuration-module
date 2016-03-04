@@ -1,16 +1,17 @@
 <?php namespace Anomaly\ConfigurationModule\Configuration;
 
-use Illuminate\Support\Collection;
+use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationInterface;
+use Anomaly\Streams\Platform\Entry\EntryCollection;
 
 /**
  * Class ConfigurationCollection
  *
- * @link          http://anomaly.is/streams-platform
- * @author        AnomalyLabs, Inc. <hello@anomaly.is>
- * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\ConfigurationModule\ConfigurationInterface
+ * @link          http://pyrocms.com/
+ * @author        PyroCMS, Inc. <support@pyrocms.com>
+ * @author        Ryan Thompson <ryan@pyrocms.com>
+ * @package       Anomaly\ConfigurationModule\Configuration
  */
-class ConfigurationCollection extends Collection
+class ConfigurationCollection extends EntryCollection
 {
 
     /**
@@ -20,8 +21,9 @@ class ConfigurationCollection extends Collection
      */
     public function __construct($items = [])
     {
-        foreach ($items as $key => $value) {
-            $this->items[substr($key, strpos($key, '::') + 2)] = $value;
+        /* @var ConfigurationInterface $item */
+        foreach ($items as $item) {
+            $this->items[$item->getKey() . $item->getScope()] = $item;
         }
     }
 }

@@ -2,16 +2,17 @@
 
 use Anomaly\ConfigurationModule\Configuration\Contract\ConfigurationRepositoryInterface;
 use Illuminate\Config\Repository;
+use Illuminate\Contracts\Bus\SelfHandling;
 
 /**
  * Class ConfigurationFormFields
  *
- * @link          http://anomaly.is/streams-platform
- * @author        AnomalyLabs, Inc. <hello@anomaly.is>
- * @author        Ryan Thompson <ryan@anomaly.is>
+ * @link          http://pyrocms.com/
+ * @author        PyroCMS, Inc. <support@pyrocms.com>
+ * @author        Ryan Thompson <ryan@pyrocms.com>
  * @package       Anomaly\ConfigurationModule\Configuration\Form
  */
-class ConfigurationFormFields
+class ConfigurationFormFields implements SelfHandling
 {
 
     /**
@@ -38,7 +39,7 @@ class ConfigurationFormFields
      */
     public function handle(ConfigurationFormBuilder $builder, ConfigurationRepositoryInterface $configuration)
     {
-        $scope = $builder->getScope();
+        $scope     = $builder->getScope();
         $namespace = $builder->getFormEntry() . '::';
 
         /**
@@ -74,38 +75,65 @@ class ConfigurationFormFields
             $field['config'] = array_get($field, 'config', []);
 
             // Default the label.
-            $field['label'] = trans(
-                array_get(
+            if (trans()->has(
+                $label = array_get(
                     $field,
                     'label',
                     $namespace . 'configuration.' . $slug . '.label'
                 )
+            )
+            ) {
+                $field['label'] = trans($label);
+            }
+
+            // Default the label.
+            $field['label'] = trans(
+                array_get(
+                    $field,
+                    'label',
+                    $namespace . 'configuration.' . $slug . '.name'
+                )
             );
+
+            // Default the warning.
+            if (trans()->has(
+                $warning = array_get(
+                    $field,
+                    'warning',
+                    $namespace . 'configuration.' . $slug . '.warning'
+                )
+            )
+            ) {
+                $field['warning'] = trans($warning);
+            }
 
             // Default the placeholder.
             $field['config']['placeholder'] = trans(
                 array_get(
-                    $field['config'],
+                    $field,
                     'placeholder',
                     $namespace . 'configuration.' . $slug . '.placeholder'
                 )
             );
 
             // Default the instructions.
-            $field['instructions'] = trans(
-                array_get(
+            if (trans()->has(
+                $instructions = array_get(
                     $field,
                     'instructions',
                     $namespace . 'configuration.' . $slug . '.instructions'
                 )
-            );
+            )
+            ) {
+                $field['instructions'] = trans($instructions);
+            }
 
             // Get the value defaulting to the default value.
-            $field['value'] = $configuration->get(
-                $namespace . $slug,
-                $scope,
-                array_get($field['config'], 'default_value')
-            );
+            if ($applied = $configuration->get($namespace . $slug, $scope)) {
+                $field['value'] = $applied->getValue();
+            } else {
+                $field['value'] = array_get($field['config'], 'default_value');
+            }
         }
 
         $builder->setFields($fields);

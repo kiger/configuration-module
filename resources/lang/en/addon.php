@@ -1,6 +1,7 @@
 <?php
 
 return [
-    'name'        => 'Configuration',
-    'description' => 'Configuration management.'
+    'title'       => 'Configuration',
+    'name'        => 'Configuration Module',
+    'description' => 'Addon configuration management.'
 ];
