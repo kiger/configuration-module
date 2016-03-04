@@ -1,6 +1,7 @@
 <?php
 
 return [
-    'name'        => 'Configuration',
+    'title'       => 'Configuration',
+    'name'        => 'Module Configuration',
     'description' => 'Gestion de la configuration.'
 ];
