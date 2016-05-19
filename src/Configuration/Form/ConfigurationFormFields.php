@@ -83,16 +83,14 @@ class ConfigurationFormFields implements SelfHandling
                 )
             )
             ) {
-                $field['label'] = trans($label);
+                $field['label'] = $label;
             }
 
             // Default the label.
-            $field['label'] = trans(
-                array_get(
-                    $field,
-                    'label',
-                    $namespace . 'configuration.' . $slug . '.name'
-                )
+            $field['label'] = array_get(
+                $field,
+                'label',
+                $namespace . 'configuration.' . $slug . '.name'
             );
 
             // Default the warning.
@@ -104,16 +102,14 @@ class ConfigurationFormFields implements SelfHandling
                 )
             )
             ) {
-                $field['warning'] = trans($warning);
+                $field['warning'] = $warning;
             }
 
             // Default the placeholder.
-            $field['config']['placeholder'] = trans(
-                array_get(
-                    $field,
-                    'placeholder',
-                    $namespace . 'configuration.' . $slug . '.placeholder'
-                )
+            $field['config']['placeholder'] = array_get(
+                $field,
+                'placeholder',
+                $namespace . 'configuration.' . $slug . '.placeholder'
             );
 
             // Default the instructions.
@@ -125,7 +121,7 @@ class ConfigurationFormFields implements SelfHandling
                 )
             )
             ) {
-                $field['instructions'] = trans($instructions);
+                $field['instructions'] = $instructions;
             }
 
             // Get the value defaulting to the default value.
